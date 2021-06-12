@@ -10,25 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DocApp
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Update.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Update : Window
     {
-        public MainWindow()
+        public Update()
         {
             InitializeComponent();
-        }
-
-        private void Create_btn_Click(object sender, RoutedEventArgs e)
-        {
-            Create create = new Create();
-            create.ShowDialog();
         }
     }
 }
