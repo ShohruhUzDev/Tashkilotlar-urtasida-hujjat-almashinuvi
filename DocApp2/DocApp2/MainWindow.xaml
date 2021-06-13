@@ -7,6 +7,7 @@
     
         xmlns:local="clr-namespace:DocApp2"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
       WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="600" Width="1000">
     <Grid ShowGridLines="True">
@@ -80,7 +81,7 @@
             </ComboBox>
         </StackPanel>
 
-        <DataGrid Grid.Column="0" BorderBrush="Black" Height="284" VerticalAlignment="Center" Grid.RowSpan="3"/>
+        <DataGrid x:Name="mydatagrid" Grid.Column="0" BorderBrush="Black" Height="284" VerticalAlignment="Center" Grid.RowSpan="3"/>
 
 
 

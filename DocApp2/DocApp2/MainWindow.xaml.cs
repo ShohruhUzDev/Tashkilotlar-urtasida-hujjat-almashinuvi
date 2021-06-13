@@ -1,5 +1,8 @@
-﻿using System;
+﻿
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +23,17 @@ namespace DocApp2
     /// </summary>
     public partial class MainWindow : Window
     {
+        DataTable dt = new DataTable();
+        HujjatContext _db = new HujjatContext();
         public MainWindow()
         {
             InitializeComponent();
+            dt.Columns.Add("Id");
+            dt.Columns.Add("Matni");
+            dt.Columns.Add("Tuliq ismi");
+            dt.Columns.Add("Viloyat Nomi");
+            dt.Columns.Add("Hujjat turi");
+
         }
 
         private void Create_btn_Click(object sender, RoutedEventArgs e)
@@ -37,6 +48,31 @@ namespace DocApp2
         {
             Update update = new Update();
             update.ShowDialog();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            using(HujjatContext db=new HujjatContext())
+            {
+                var hujjat = db.Hujjats.Include(i => i.HujjatTuri)
+                    .Include(j => j.Viloyat).ToList();
+
+               
+                //datatable ni tuldirayapmiz. 
+                foreach( Hujjat i in hujjat)
+                {
+                    dt.Rows.Add(i.Id, i.Matni, i.TuliqIsmi, i.Viloyat?.ViloyatNomi, i.HujjatTuri?.HujjatNomi);
+                }
+
+
+                mydatagrid.DataContext = dt;
+
+
+
+
+
+            }
+
         }
     }
 }

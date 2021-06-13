@@ -5,18 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocApp
+namespace DocApp2
 {
    public  class HujjatContext:DbContext
     {
-        DbSet<Hujjat> Hujjats { get; set; }
-        DbSet<HujjatTuri> HujatTuris { get; set; }
-        DbSet<Viloyat> Viloyats { get; set; }
-        //public HujjatContext()
-        //{
-        //    Database.EnsureDeleted();
-        //    Database.EnsureCreated();
-        //}
+       public  DbSet<Hujjat> Hujjats { get; set; }
+      public   DbSet<HujjatTuri> HujatTuris { get; set; }
+      public  DbSet<Viloyat> Viloyats { get; set; }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=Hujjatdb; Trusted_Connection=true");

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocApp
+namespace DocApp2
 {
    public  class Hujjat
     {
@@ -22,12 +22,12 @@ namespace DocApp
     {
         public int Id { get; set; }
         public string  ViloyatNomi { get; set; }
-        List<Hujjat> Hujjatlar { get; set; }
+        public List<Hujjat> Hujjatlar { get; set; }
     }
     public class HujjatTuri
     {
         public int Id{ get; set; }
         public string  HujjatNomi { get; set; }
-        List<Hujjat> Hujjatlar { get; set; }
+        public List<Hujjat> Hujjatlar { get; set; }
     }
 }
