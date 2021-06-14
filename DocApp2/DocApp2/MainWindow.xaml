@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    
+    Closed="Window_Closed"
         xmlns:local="clr-namespace:DocApp2"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
       WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="600" Width="1000">
-    <Grid ShowGridLines="True">
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="4*"/>
@@ -28,7 +28,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="382,0,0,0">
             <StackPanel Orientation="Horizontal">
-                <TextBox Width="200" Height="50" TextAlignment="Center" Margin="0 10 0 10" 
+                <TextBox x:Name="search_txt" TextChanged="search_txt_TextChanged" Width="200" Height="50" TextAlignment="Center" Margin="0 10 0 10" 
                   materialDesign:HintAssist.Hint="Search" Style="{StaticResource MaterialDesignFloatingHintTextBox}">
 
                 </TextBox>
@@ -38,53 +38,102 @@
             </StackPanel>
 
 
-            <ComboBox Width="150" Height="50" Margin="10" materialDesign:HintAssist.Hint="Viloyat" 
+            <ComboBox Name="Viloyat_cbx" SelectionChanged="Viloyat_cbx_SelectionChanged" Width="150" Height="50" Margin="10" materialDesign:HintAssist.Hint="Viloyat" 
                       Background="White" Style="{StaticResource MaterialDesignFilledComboBox}">
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
-
-
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
+                
             </ComboBox>
 
-            <ComboBox Width="150" Height="50" Margin="10 0 20 0" materialDesign:HintAssist.Hint="Hujjat turi" 
+            <ComboBox Name="Hujjat_cbx" SelectionChanged="Hujjat_cbx_SelectionChanged" Width="150" Height="50" Margin="10 0 20 0" materialDesign:HintAssist.Hint="Hujjat turi" 
                       Background="White" Style="{StaticResource MaterialDesignFilledComboBox}">
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
-
-
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Salom1
-                </ComboBoxItem>
+                
             </ComboBox>
         </StackPanel>
 
-        <DataGrid x:Name="mydatagrid" Grid.Column="0" BorderBrush="Black" Height="284" VerticalAlignment="Center" Grid.RowSpan="3"/>
+        <DataGrid x:Name="mydatagrid"  AutoGenerateColumns="False"  Grid.Column="0" BorderBrush="Black" Height="400" Width="auto" VerticalAlignment="Center" Grid.RowSpan="3">
+
+            
 
 
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding NO}" ClipboardContentBinding="{x:Null}" Header="Id" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Matni" Binding="{Binding Matni}" IsReadOnly="True" Width="500"  CanUserResize="False"/>
+                <DataGridTextColumn Header="Tuliq ismi" Binding="{Binding Tuliq_ismi}" IsReadOnly="True" Width="105" CanUserResize="False"/>
+                <DataGridTextColumn Header="Viloyat " Binding="{Binding Viloyat_Nomi}" IsReadOnly="True" Width="105" CanUserResize="False"/>
+                <DataGridTextColumn Header="Hujjat turi" Binding="{Binding Hujjat_turi}" IsReadOnly="True" Width="100" CanUserResize="False"/>
+                <DataGridTemplateColumn  Header="" CanUserSort="True" CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="Delete_btn" Click="Delete_btn_Click" IsEnabled="True" >Delete
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn  Header="" CanUserSort="True" CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="Edit_btn" IsEnabled="True" Click="Edit_btn_Click" >Edit
 
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+        <!--<DataGrid.Columns>
+                <DataGridTextColumn>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Height="20" Width="30">
+                            Id
+                        </TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Height="20" Width="400">
+                       Matni
+                        </TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Height="20" Width="100">
+                            Viloayt
+                        </TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Height="20" Width="100">
+                            Hujjat turi
+                        </TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Height="20" Width="30">
+                            Action
+                        </TextBlock>
+                    </DataGridTextColumn.Header>
+                    
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="ChangeText">Show/Hide</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+           -->
 
 
 

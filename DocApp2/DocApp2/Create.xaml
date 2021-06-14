@@ -3,53 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DocApp"
+        xmlns:local="clr-namespace:DocApp2"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-       
+       Loaded="Window_Loaded"
+        Closed="Window_Closed"
         Title="Create" Height="450" Width="500">
 
     <StackPanel HorizontalAlignment="Left" Width="488" Margin="0,0,0,11">
-        <TextBox TextWrapping="Wrap" Width="400" Height="50" HorizontalAlignment="Left" TextAlignment="Left" Margin="20 10 0 10" 
+        <TextBox x:Name="Matni_txt" x:FieldModifier="public" TextWrapping="Wrap" Width="400" Height="50" HorizontalAlignment="Left" TextAlignment="Left" Margin="20 10 0 10" 
                   materialDesign:HintAssist.Hint="Matni" Style="{StaticResource MaterialDesignFloatingHintTextBox}">
 
         </TextBox>
-        <TextBox Width="400" TextAlignment="Left" Height="50"  Margin="20 10 0 10" HorizontalAlignment="Left"
-                  materialDesign:HintAssist.Hint="Search" Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+        <TextBox x:Name="Ism_Fam_txt"  x:FieldModifier="public"  Width="400" TextAlignment="Left" Height="50"  Margin="20 10 0 10" HorizontalAlignment="Left"
+                  materialDesign:HintAssist.Hint="Ismi Familiyasi" Style="{StaticResource MaterialDesignFloatingHintTextBox}">
 
         </TextBox>
-        <TextBox Width="400" Height="50" TextAlignment="Left" Margin="20 10 0 10" HorizontalAlignment="Left"
-                  materialDesign:HintAssist.Hint="Search" Style="{StaticResource MaterialDesignFloatingHintTextBox}">
 
-        </TextBox>
-        <ComboBox Height="50" Margin="20,10,10,10" Width="200" materialDesign:HintAssist.Hint="Hujjat turi" HorizontalAlignment="Left"
+        <ComboBox Name="Hujjatturi_cbx"  x:FieldModifier="public" Height="50" Margin="20,10,10,10" Width="200" materialDesign:HintAssist.Hint="Hujjat turi" HorizontalAlignment="Left"
                       Background="White" Style="{StaticResource MaterialDesignFilledComboBox}">
-            <ComboBoxItem>
-                Salom1
-            </ComboBoxItem>
-            <ComboBoxItem>
-                Salom1
-            </ComboBoxItem>
-            <ComboBoxItem>
-                Salom1
-            </ComboBoxItem>
+            
 
         </ComboBox>
-        <ComboBox Height="50" Margin="20,10,10,10" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Viloyat" 
+        <ComboBox Name="Viloyat_cbx"  x:FieldModifier="public" Height="50" Margin="20,10,10,10" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Viloyat" 
                       Background="White" Style="{StaticResource MaterialDesignFilledComboBox}">
-            <ComboBoxItem>
-                Salom1
-            </ComboBoxItem>
-            <ComboBoxItem>
-                Salom1
-            </ComboBoxItem>
-            <ComboBoxItem>
-                Salom1
-            </ComboBoxItem>
-
+            
         </ComboBox>
-        <Button   Height="40" Width="350"
+        <Button x:Name="Save_btn"  x:FieldModifier="public" Click="Save_btn_Click" Margin="0 70 0 0 "  Height="40" Width="350" 
                 materialDesign:ShadowAssist.ShadowDepth="Depth3"  BorderThickness="2">
             <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon Kind="FileDocumentBoxTick" HorizontalAlignment="Right" Height="30"
