@@ -26,7 +26,7 @@ namespace DocApp2
         public Create()
         {
             InitializeComponent();
-            dt.Columns.Add("№");
+            dt.Columns.Add("NO");
             dt.Columns.Add("Matni");
         //   dt.Columns.Add("Shaxs");
             dt.Columns.Add("Tuliq ismi");
@@ -74,6 +74,7 @@ namespace DocApp2
 
                 var hujjat = db.Hujjats.Include(i => i.HujjatTuri)
                      .Include(j => j.Viloyat).ToList();
+                dt.Clear();
 
                 //datatable ni tuldirayapmiz. 
                 foreach (Hujjat i in hujjat)
@@ -81,9 +82,9 @@ namespace DocApp2
                     dt.Rows.Add(i.Id, i.Matni, i.TuliqIsmi, i.Viloyat?.ViloyatNomi, i.HujjatTuri?.HujjatNomi);
                 }
                 MainWindow mn = new MainWindow();
-                //mn.mydatagrid.ItemsSource = dt.DefaultView;
+               
 
-                //mn.Show();
+                mn.Show();
                 this.Hide();
 
             }

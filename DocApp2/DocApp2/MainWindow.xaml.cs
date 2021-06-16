@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
+
 namespace DocApp2
 {
     /// <summary>
@@ -25,6 +27,10 @@ namespace DocApp2
     {
       public  DataTable dt = new DataTable();
         HujjatContext _db = new HujjatContext();
+        Microsoft.Office.Interop.Excel.Application excel;
+        Microsoft.Office.Interop.Excel.Workbook workBook;
+        Microsoft.Office.Interop.Excel.Worksheet workSheet;
+        Microsoft.Office.Interop.Excel.Range cellRange;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,9 +39,7 @@ namespace DocApp2
             dt.Columns.Add("Tuliq_ismi");
             dt.Columns.Add("Viloyat_Nomi");
             dt.Columns.Add("Hujjat_turi");
-         //   dt.Columns.Add("Action");
-         //   dt.Columns.Add("Action");
-
+       
         }
 
         private void Create_btn_Click(object sender, RoutedEventArgs e)
@@ -48,10 +52,77 @@ namespace DocApp2
 
         private void Exprort_btn_Click(object sender, RoutedEventArgs e)
         {
-            Update update = new Update();
-            update.ShowDialog();
-        }
+            using (HujjatContext db = new HujjatContext())
+            {
+                var hujjat = db.Hujjats.Include(i => i.HujjatTuri)
+                    .Include(j => j.Viloyat).ToList();
 
+
+                dt.Clear();
+
+                //datatable ni tuldirayapmiz. 
+                foreach (Hujjat i in hujjat)
+                {
+                    dt.Rows.Add(i.Id, i.Matni, i.TuliqIsmi, i.Viloyat?.ViloyatNomi, i.HujjatTuri?.HujjatNomi);
+                }
+
+
+
+                
+               
+
+
+            }
+           // GenerateExcel(dt);
+        }
+        //private void GenerateExcel(DataTable DtIN)
+        //{
+        //    IList<Hujjat> listhujjat = new List<Hujjat>();
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        listhujjat.Add(new Hujjat
+        //        {
+        //            Id = Convert.ToInt32("Id " + i),
+        //            Matni = "Matni " + i,
+        //            TuliqIsmi = "Ismi " + i,
+        //           ViloyatId =Convert.ToInt32( "Viloyat " + i),
+        //           HujjatTuriId=Convert.ToInt32("Hujjatid"+i)
+        //        });
+        //    }
+        // var dgExcel;
+        //    dgExcel.ItemsSource = listhujjat;
+        //    try
+        //    {
+        //        excel = new Microsoft.Office.Interop.Excel.Application();
+        //        excel.DisplayAlerts = false;
+        //        excel.Visible = false;
+        //        workBook = excel.Workbooks.Add(Type.Missing);
+        //        workSheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.ActiveSheet;
+        //        workSheet.Name = "LearningExcel";
+        //        System.Data.DataTable tempDt = DtIN;
+        //        dgExcel.ItemsSource = tempDt.DefaultView;
+        //        workSheet.Cells.Font.Size = 11;
+        //        int rowcount = 1;
+        //        for (int i = 1; i <= tempDt.Columns.Count; i++) //taking care of Headers.  
+        //        {
+        //            workSheet.Cells[1, i] = tempDt.Columns[i - 1].ColumnName;
+        //        }
+        //        foreach (System.Data.DataRow row in tempDt.Rows) //taking care of each Row  
+        //        {
+        //            rowcount += 1;
+        //            for (int i = 0; i < tempDt.Columns.Count; i++) //taking care of each column  
+        //            {
+        //                workSheet.Cells[rowcount, i + 1] = row[i].ToString();
+        //            }
+        //        }
+        //        cellRange = workSheet.Range[workSheet.Cells[1, 1], workSheet.Cells[rowcount, tempDt.Columns.Count]];
+        //        cellRange.EntireColumn.AutoFit();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var hujjatturi = _db.HujatTuris.ToList();
@@ -81,8 +152,8 @@ namespace DocApp2
                 var hujjat = db.Hujjats.Include(i => i.HujjatTuri)
                     .Include(j => j.Viloyat).ToList();
 
-               
 
+                dt.Clear();
 
                 //datatable ni tuldirayapmiz. 
                 foreach ( Hujjat i in hujjat)
@@ -91,70 +162,13 @@ namespace DocApp2
                 }
 
 
-                //for (int i = 0; i < dt.Columns.Count; i++)
-                //{
-                //    for (int j = 0; j < dt.Rows.Count; j++)
-                //    {
-                //        Button MyControl1 = new Button();
-                //        MyControl1.Content = "Delete";
-                //        MyControl1.Name = "Delete_btn" ;
-
-                //        dt.Columns.Add(MyControl1, j);
-                //        Grid.SetRow(MyControl1, i);
-                //        dt.Rows.Add(MyControl1);
-
-                //        count++;
-                //    }
-
-                //}
-
-                // dt.Rows.Add( btn);
-                //  mydatagrid.ItemsSource = dt.DefaultView;
+                
                 _db.Hujjats.Load();
                 var hujjat1 = db.Hujjats.Include(i => i.HujjatTuri)
                    .Include(j => j.Viloyat).ToList();
 
                 mydatagrid.ItemsSource = dt.DefaultView;
-                //string colProperty = "Name";
-
-                //DataGridTextColumn col = new DataGridTextColumn();
-                //col.Binding = new Binding(colProperty);
-                //var spHeader = new StackPanel() { Orientation = Orientation.Vertical };
-                //spHeader.Children.Add(new TextBlock(new Run(colProperty)));
-                //var button = new Button();
-                //button.Click += Button_Filter_Click;
-                //button.Content = "Filter";
-                //spHeader.Children.Add(button);
-                //col.Header = spHeader;
-
-                //mydatagrid.Columns.Add(col);
                 
-                //DataGridTemplateColumn colBtn = new DataGridTemplateColumn();
-                //DataTemplate DttBtn = new DataTemplate();
-                //FrameworkElementFactory btn1 = new FrameworkElementFactory(typeof(Button));
-                //FrameworkElementFactory text = new FrameworkElementFactory(typeof(TextBlock));
-                //FrameworkElementFactory panel = new FrameworkElementFactory(typeof(StackPanel));
-                //// FrameworkElementFactory img = new FrameworkElementFactory(typeof(Image));
-
-                ////img.SetValue(Image.SourceProperty, (BitmapImage)FindResource("Img"));
-                ////img.SetValue(Image.HeightProperty, Convert.ToDouble(16));
-                ////img.SetValue(Image.WidthProperty, Convert.ToDouble(16));
-                //Button bt = new Button();
-                //bt.Height = 50;
-                //bt.Width = 50;
-                //bt.Content = "Delete";
-                //text.Text = "Delete";
-               
-                //panel.AppendChild(text);
-               
-                ////panel.AppendChild(img);
-                //panel.AppendChild(btn1);
-                ////btn1.AppendChild(panel);
-                //btn1.AddHandler(Button.ClickEvent, new RoutedEventHandler(Btn_Click));
-                //DttBtn.VisualTree = panel;
-                //colBtn.CellTemplate = DttBtn;
-                //mydatagrid.Columns.Add(colBtn);
-
 
             }
 
@@ -166,10 +180,7 @@ namespace DocApp2
             //   
         }
 
-        //private void Button_Filter_Click(object sender, RoutedEventArgs e)
-        //{
-        //    MessageBox.Show("Salom");
-        //}
+       
 
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -235,12 +246,66 @@ namespace DocApp2
 
         private void Delete_btn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Delete bosildi");
+            try
+            {
+                DataRowView row = (DataRowView)mydatagrid.SelectedItem;
+
+                int id1 = Convert.ToInt32(row["NO"]);
+                using(HujjatContext h=new HujjatContext())
+                {
+                    var hujjat3 = h.Hujjats.FirstOrDefault(i => i.Id == id1);
+                    if(hujjat3!=null)
+                    {
+                        h.Hujjats.Remove(hujjat3);
+                        h.SaveChanges();
+                        var hujjat =h.Hujjats.Include(i => i.HujjatTuri)
+                   .Include(j => j.Viloyat).ToList();
+
+
+                        dt.Clear();
+
+                        //datatable ni tuldirayapmiz. 
+                        foreach (Hujjat i in hujjat)
+                        {
+                            dt.Rows.Add(i.Id, i.Matni, i.TuliqIsmi, i.Viloyat?.ViloyatNomi, i.HujjatTuri?.HujjatNomi);
+                        }
+                        mydatagrid.DataContext = dt.DefaultView;
+
+                    }
+
+                    else
+                    {
+                        MessageBox.Show("Bu hujjat topilmadi");
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            
+           
         }
 
         private void Edit_btn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Edit bosildi");
+            try
+            {
+                DataRowView row = (DataRowView)mydatagrid.SelectedItem;
+
+                int id1 = Convert.ToInt32(row["NO"]);
+
+                Update update = new Update(id1);
+
+                this.Hide();
+                update.Show();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }
