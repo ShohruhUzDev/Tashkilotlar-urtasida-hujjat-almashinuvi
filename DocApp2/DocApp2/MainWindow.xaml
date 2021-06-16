@@ -57,14 +57,19 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding NO}" ClipboardContentBinding="{x:Null}" Header="Id" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Matni" Binding="{Binding Matni}" IsReadOnly="True" Width="500"  CanUserResize="False"/>
-                <DataGridTextColumn Header="Tuliq ismi" Binding="{Binding Tuliq_ismi}" IsReadOnly="True" Width="105" CanUserResize="False"/>
+                <DataGridTextColumn Header="Tuliq ismi" Binding="{Binding Tuliq_ismi}" IsReadOnly="True" Width="205" CanUserResize="False"/>
                 <DataGridTextColumn Header="Viloyat " Binding="{Binding Viloyat_Nomi}" IsReadOnly="True" Width="105" CanUserResize="False"/>
                 <DataGridTextColumn Header="Hujjat turi" Binding="{Binding Hujjat_turi}" IsReadOnly="True" Width="100" CanUserResize="False"/>
                 <DataGridTemplateColumn  Header="" CanUserSort="True" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Name="Delete_btn" Click="Delete_btn_Click" IsEnabled="True" >Delete
-                            </Button>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="Delete_btn" Click="Delete_btn_Click" IsEnabled="True" >
+                                    <materialDesign:PackIcon Kind="Trash" HorizontalAlignment="Right" Height="30" Width="30"                                         VerticalAlignment="Center"    />
+
+                                </Button>
+                            </StackPanel>
+                           
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     
@@ -72,9 +77,13 @@
                 <DataGridTemplateColumn  Header="" CanUserSort="True" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Name="Edit_btn" IsEnabled="True" Click="Edit_btn_Click" >Edit
+                            <Button Name="Edit_btn" IsEnabled="True" Click="Edit_btn_Click" >
+                                <materialDesign:PackIcon Kind="Pen" HorizontalAlignment="Right" Height="30" Width="30"                                         VerticalAlignment="Center"    />
+
 
                             </Button>
+                          
+
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
 
