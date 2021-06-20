@@ -1,9 +1,14 @@
 ﻿
+using ClosedXML.Excel;
+
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,14 +28,11 @@ namespace DocApp2
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
-      public  DataTable dt = new DataTable();
+      public System.Data.DataTable dt = new System.Data.DataTable();
         HujjatContext _db = new HujjatContext();
-        Microsoft.Office.Interop.Excel.Application excel;
-        Microsoft.Office.Interop.Excel.Workbook workBook;
-        Microsoft.Office.Interop.Excel.Worksheet workSheet;
-        Microsoft.Office.Interop.Excel.Range cellRange;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -49,7 +51,86 @@ namespace DocApp2
 
             
         }
+     
+            public static void ExportToExcel(System.Data.DataTable tbl, string excelFilePath = null)
+            {
+                try
+                {
+                    if (tbl == null || tbl.Columns.Count == 0)
+                        throw new Exception("ExportToExcel: Null or empty input table!\n");
 
+                    // load excel, and create a new workbook
+                    var excelApp = new Microsoft.Office.Interop.Excel.Application();
+                    excelApp.Workbooks.Add();
+
+                // single worksheet
+                Microsoft.Office.Interop.Excel._Worksheet workSheet = (_Worksheet)excelApp.ActiveSheet;
+
+
+                    // column headings
+                    for (var i = 0; i < tbl.Columns.Count; i++)
+                    {
+                        workSheet.Cells[1, i + 1] = tbl.Columns[i].ColumnName;
+
+                    }
+
+                    // rows
+                    for (var i = 0; i < tbl.Rows.Count; i++)
+                    {
+                        // to do: format datetime values before printing
+                        for (var j = 0; j < tbl.Columns.Count; j++)
+                        {
+                            workSheet.Cells[i + 2, j + 1] = tbl.Rows[i][j];
+                            string cellRange = string.Format("J{0}", i + 1);
+                            //if (cellRange == "0")
+                            //{
+                            //    workSheet.Cells[i + 1].Style.Fill.BackgroundColor = XLColor.GreenYellow;
+                            //}
+                            //else
+                            //{
+                            //    workSheet.Cells[i + 1].Style.Fill.BackgroundColor = XLColor.Yellow;
+                            //}
+                        }
+
+
+                    }
+
+                    // check file path
+                    if (!string.IsNullOrEmpty(excelFilePath))
+                    {
+                        try
+                        {
+                            workSheet.SaveAs(excelFilePath);
+                            excelApp.Quit();
+                            //MessageBox.Show("Excel file saved!");
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception("ExportToExcel: Excel file could not be saved! Check filepath.\n"
+                            + ex.Message);
+                        }
+                    }
+                    else
+                    { // no file path is given
+                        excelApp.Visible = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExportToExcel: \n" + ex.Message);
+                }
+            }
+        private static void releaseObject(object o)
+        {
+            try
+            {
+                while (System.Runtime.InteropServices.Marshal.ReleaseComObject(o) > 0)
+                { }
+            }
+
+            catch { }
+            finally { o = null; }
+        }
         private void Exprort_btn_Click(object sender, RoutedEventArgs e)
         {
             using (HujjatContext db = new HujjatContext())
@@ -67,13 +148,53 @@ namespace DocApp2
                 }
 
 
-
-                
                
 
 
+            //C: \Users\User\Desktop\Tashkilotlar - urtasida - hujjat - almashinuvi\DocApp2
+            // ExportToExcel(dt, "C:/Users/User/Desktop/Tashkilotlar-urtasida-hujjat-almashinuvi/DocApp2/DocApp2/excel.xls");
+                StreamWriter wr = new StreamWriter(@"D:\\Book1.xls");
+                try
+                {
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        wr.Write(dt.Columns[i].ToString().ToUpper() + "\t");
+                    }
+
+                    wr.WriteLine();
+
+                    //write rows to excel file
+                    for (int i = 0; i < (dt.Rows.Count); i++)
+                    {
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                            if (dt.Rows[i][j] != null)
+                            {
+                                wr.Write(Convert.ToString(dt.Rows[i][j]) + "\t");
+                            }
+                            else
+                            {
+                                wr.Write("\t");
+                            }
+                        }
+                        //go to next line
+                wr.WriteLine();
+                    }
+                    //close file
+                    wr.Close();
+                    MessageBox.Show("Bajarildi");
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
-           // GenerateExcel(dt);
+
+
+
+
+            // GenerateExcel(dt);
         }
         //private void GenerateExcel(DataTable DtIN)
         //{
